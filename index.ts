@@ -1,4 +1,4 @@
-import {Client, Message, PresenceData, VoiceConnection} from "discord.js";
+import {Client, Message, PresenceData, Snowflake, VoiceConnection} from "discord.js";
 import * as AWS from "aws-sdk"
 import * as Stream from "stream"
 import * as ytdl from "ytdl-core"
@@ -111,12 +111,17 @@ async function start() {
     }, 1000 * 10);
 }
 
+interface Settings {
+    nofunEnabled : boolean
+}
+
 const voiceMap : { [guild : string]: VoiceConnection} = {};
+const settingsMap : { [guild : string]: Settings} = {};
 
 async function pollyTTS(msg : Message, speaker? : VoiceId, text? : string){
-    await joinVoice(msg);
+    if(!text) text = textQuotes[Math.floor(Math.random()*textQuotes.length)].toString();
     Polly.synthesizeSpeech({
-        Text : text ? text : textQuotes[Math.floor(Math.random()*textQuotes.length)].toString(),
+        Text : text,
         VoiceId: speaker ? speaker : "Joey",
         OutputFormat : "mp3",
     }, ((err, data) => {
@@ -134,7 +139,7 @@ async function pollyTTS(msg : Message, speaker? : VoiceId, text? : string){
 
 async function playYoutube(msg : Message, url : string){
     if(!url.match(/http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/)){
-        await msg.reply("This is not a youtube link you worthless cunt!");
+        await msg.reply("This is not a youtube link - worthless cunt!");
         return;
     } else {
         await playStream(msg, ytdl(url, { filter: 'audioonly' }))
@@ -156,13 +161,14 @@ async function commands(msg : Message){
     const args = msg.content.split(" ");
     console.log(new Date().toISOString() + " | "+ msg.guild.name +"#" +msg.guild.id + " | " + msg.author.tag + " | " + msg.content);
     if(args[1] === "help"){
-        await msg.reply("\n!nofun help - help\n" +
+        await msg.reply("It’s your move.\n\n!nofun help - help\n" +
             "!nofun RealDeal.mp4\n" +
             "!nofun exposed\n" +
             "!nofun DTRASh\n" +
             "!nofun play { url }\n" +
             "!nofun say { text }\n" +
             "!nofun invitelink\n" +
+            "!nofun toggle\n" +
             "\n!nofun stop\n" +
             "\nPlz don not say NO FUN or I get triggered and I ban you from the warlords discord FOREVER :(\n"
         )
@@ -181,10 +187,28 @@ async function commands(msg : Message){
     } else if (args[1].toLowerCase() === "play"){
         await playYoutube(msg, args[2])
     } else if(args[1].toLowerCase() === "say"){
-        await pollyTTS(msg, "Joey", msg.content.substring(msg.content.indexOf("say")))
+        if(msg.content.length <= msg.content.indexOf("say") + 4 + 20)
+            await msg.reply("I don't care if you do this bullshit to me. But your message is to short!");
+         else
+            await pollyTTS(msg, "Joey", msg.content.substring(msg.content.indexOf("say") + 4))
     } else if(args[1].toLowerCase() === "invitelink"){
         await msg.reply("Add me PLZZZZZZ \nhttps://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8" )
+    } else if(args[1].toLowerCase() === "toggle"){
+        if(!msg.member.hasPermission("ADMINISTRATOR"))
+            await msg.reply("I just find it pathetic with the way you act. Stop acting like a 7 year old. Show a little bot of respect for yourself. Scum");
+        else
+            getStetingsMap(msg.guild.id).nofunEnabled = !getStetingsMap(msg.guild.id).nofunEnabled;
     }
+}
+
+function getStetingsMap(guildID : Snowflake){
+    if(settingsMap[guildID]) return settingsMap[guildID];
+
+    settingsMap[guildID] = {
+        nofunEnabled : true
+    };
+
+    return settingsMap[guildID];
 }
 
 async function joinVoice(msg : Message){
@@ -194,6 +218,7 @@ async function joinVoice(msg : Message){
 }
 
 async function noFun(msg : Message){
+    if(!getStetingsMap(msg.guild.id).nofunEnabled) return;
     if(msg.author.id === discord.user.id) return;
     console.log(new Date().toISOString() + " | " + msg.guild.name +"#" +msg.guild.id + " | " + msg.author.tag + " triggered RealDeal");
 

@@ -106,11 +106,13 @@ function start() {
     });
 }
 const voiceMap = {};
+const settingsMap = {};
 function pollyTTS(msg, speaker, text) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield joinVoice(msg);
+        if (!text)
+            text = textQuotes[Math.floor(Math.random() * textQuotes.length)].toString();
         Polly.synthesizeSpeech({
-            Text: text ? text : textQuotes[Math.floor(Math.random() * textQuotes.length)].toString(),
+            Text: text,
             VoiceId: speaker ? speaker : "Joey",
             OutputFormat: "mp3",
         }, ((err, data) => {
@@ -129,7 +131,7 @@ function pollyTTS(msg, speaker, text) {
 function playYoutube(msg, url) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!url.match(/http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/)) {
-            yield msg.reply("This is not a youtube link you worthless cunt!");
+            yield msg.reply("This is not a youtube link - worthless cunt!");
             return;
         }
         else {
@@ -154,13 +156,14 @@ function commands(msg) {
         const args = msg.content.split(" ");
         console.log(new Date().toISOString() + " | " + msg.guild.name + "#" + msg.guild.id + " | " + msg.author.tag + " | " + msg.content);
         if (args[1] === "help") {
-            yield msg.reply("\n!nofun help - help\n" +
+            yield msg.reply("It’s your move.\n\n!nofun help - help\n" +
                 "!nofun RealDeal.mp4\n" +
                 "!nofun exposed\n" +
                 "!nofun DTRASh\n" +
                 "!nofun play { url }\n" +
                 "!nofun say { text }\n" +
                 "!nofun invitelink\n" +
+                "!nofun toggle\n" +
                 "\n!nofun stop\n" +
                 "\nPlz don not say NO FUN or I get triggered and I ban you from the warlords discord FOREVER :(\n");
         }
@@ -184,12 +187,29 @@ function commands(msg) {
             yield playYoutube(msg, args[2]);
         }
         else if (args[1].toLowerCase() === "say") {
-            yield pollyTTS(msg, "Joey", msg.content.substring(msg.content.indexOf("say")));
+            if (msg.content.length <= msg.content.indexOf("say") + 4 + 20)
+                yield msg.reply("I don't care if you do this bullshit to me. But your message is to short!");
+            else
+                yield pollyTTS(msg, "Joey", msg.content.substring(msg.content.indexOf("say") + 4));
         }
         else if (args[1].toLowerCase() === "invitelink") {
             yield msg.reply("Add me PLZZZZZZ \nhttps://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8");
         }
+        else if (args[1].toLowerCase() === "toggle") {
+            if (!msg.member.hasPermission("ADMINISTRATOR"))
+                yield msg.reply("I just find it pathetic with the way you act. Stop acting like a 7 year old. Show a little bot of respect for yourself. Scum");
+            else
+                getStetingsMap(msg.guild.id).nofunEnabled = !getStetingsMap(msg.guild.id).nofunEnabled;
+        }
     });
+}
+function getStetingsMap(guildID) {
+    if (settingsMap[guildID])
+        return settingsMap[guildID];
+    settingsMap[guildID] = {
+        nofunEnabled: true
+    };
+    return settingsMap[guildID];
 }
 function joinVoice(msg) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -201,6 +221,8 @@ function joinVoice(msg) {
 }
 function noFun(msg) {
     return __awaiter(this, void 0, void 0, function* () {
+        if (!getStetingsMap(msg.guild.id).nofunEnabled)
+            return;
         if (msg.author.id === discord.user.id)
             return;
         console.log(new Date().toISOString() + " | " + msg.guild.name + "#" + msg.guild.id + " | " + msg.author.tag + " triggered RealDeal");
