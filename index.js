@@ -75,7 +75,10 @@ function playYoutube(msg, url, volume) {
 function playStream(msg, stream, volume) {
     return __awaiter(this, void 0, void 0, function* () {
         yield joinVoice(msg);
-        const dispatcher = voiceMap[msg.guild.id].playStream(stream, { volume: volume });
+        const dispatcher = voiceMap[msg.guild.id].playStream(stream, {
+            passes: 5,
+            volume: volume
+        });
         dispatcher.once("end", reason => {
             if (reason === undefined)
                 return;

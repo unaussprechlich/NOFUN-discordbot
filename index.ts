@@ -7,6 +7,7 @@ import {VoiceId} from "aws-sdk/clients/polly";
 import {Readable} from "stream";
 import {textQuotes, totalQuotes} from "./Quotes";
 import {links} from "./Links";
+import {message} from "aws-sdk/clients/sns";
 
 const status : PresenceData[] = [
     {game : {name : "with ze waifu pillow!", type : "PLAYING", url : "https://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8"}},
@@ -69,14 +70,17 @@ async function playYoutube(msg : Message, url : string, volume? : number){
         await msg.reply("This is not a youtube link - worthless cunt!");
         return;
     } else {
-        await playStream(msg, ytdl(url, { filter: 'audioonly' }), volume)
+        await playStream(msg, ytdl(url, { filter : 'audioonly'}), volume)
     }
 
 }
 
 async function playStream(msg : Message, stream : Readable, volume? : number | 1){
     await joinVoice(msg);
-    const dispatcher = voiceMap[msg.guild.id].playStream(stream, {volume : volume});
+    const dispatcher = voiceMap[msg.guild.id].playStream(stream, {
+        passes : 5,
+        volume : volume
+    });
     dispatcher.once("end", reason => {
         if(reason === undefined) return;
         voiceMap[msg.guild.id].disconnect();
@@ -101,9 +105,11 @@ const help = "It’s your move.\n\n!nofun help - help\n" +
     "!nofun resume\n" +
     "\nPlz don not say NO FUN or I get triggered and I ban you from this Discord server - FOREVER :rage: \n";
 
+
 async function commands(msg : Message){
     const args = msg.content.split(" ");
     console.log(new Date().toISOString() + " | "+ msg.guild.name +"#" +msg.guild.id + " | " + msg.author.tag + " | " + msg.content);
+
     if(args.length === 1 || args[1] === "help"){
         await msg.reply(help);
         return;
