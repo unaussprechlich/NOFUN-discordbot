@@ -128,21 +128,21 @@ function pollyTTS(msg, speaker, text) {
         }));
     });
 }
-function playYoutube(msg, url) {
+function playYoutube(msg, url, volume) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!url.match(/http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/)) {
             yield msg.reply("This is not a youtube link - worthless cunt!");
             return;
         }
         else {
-            yield playStream(msg, ytdl(url, { filter: 'audioonly' }));
+            yield playStream(msg, ytdl(url, { filter: 'audioonly' }), volume);
         }
     });
 }
-function playStream(msg, stream) {
+function playStream(msg, stream, volume) {
     return __awaiter(this, void 0, void 0, function* () {
         yield joinVoice(msg);
-        const dispatcher = voiceMap[msg.guild.id].playStream(stream);
+        const dispatcher = voiceMap[msg.guild.id].playStream(stream, { volume: volume });
         dispatcher.once("end", reason => {
             if (reason === undefined)
                 return;
@@ -151,27 +151,34 @@ function playStream(msg, stream) {
         });
     });
 }
+const help = "It’s your move.\n\n!nofun help - help\n" +
+    "!nofun RealDeal.mp4\n" +
+    "!nofun exposed\n" +
+    "!nofun DTRASh\n" +
+    "!nofun earrape\n" +
+    "!nofun windowsxp\n" +
+    "!nofun wii\n" +
+    "!nofun play { url }\n" +
+    "!nofun say { text }\n" +
+    "!nofun invitelink\n" +
+    "\n!nofun toggle\n" +
+    "\n!nofun stop\n" +
+    "!nofun pause\n" +
+    "!nofun resume\n" +
+    "\nPlz don not say NO FUN or I get triggered and I ban you from this Discord server - FOREVER :rage: \n";
 function commands(msg) {
     return __awaiter(this, void 0, void 0, function* () {
         const args = msg.content.split(" ");
         console.log(new Date().toISOString() + " | " + msg.guild.name + "#" + msg.guild.id + " | " + msg.author.tag + " | " + msg.content);
-        if (args[1] === "help") {
-            yield msg.reply("It’s your move.\n\n!nofun help - help\n" +
-                "!nofun RealDeal.mp4\n" +
-                "!nofun exposed\n" +
-                "!nofun DTRASh\n" +
-                "!nofun play { url }\n" +
-                "!nofun say { text }\n" +
-                "!nofun invitelink\n" +
-                "!nofun toggle\n" +
-                "\n!nofun stop\n" +
-                "\nPlz don not say NO FUN or I get triggered and I ban you from the warlords discord FOREVER :(\n");
+        if (args.length === 1 || args[1] === "help") {
+            yield msg.reply(help);
+            return;
         }
         else if (args[1] === "stop") {
             if (voiceMap[msg.guild.id]) {
                 voiceMap[msg.guild.id].disconnect();
                 delete voiceMap[msg.guild.id];
-                yield msg.reply("Okay okay, I stop NO FUN! Fuck u!");
+                yield msg.reply("Okay - Worthless piece of shit I stop NOFUN! Pathetic cunt!");
             }
         }
         else if (args[1].toLowerCase() === "_realdeal_.mp4" || args[1].toLowerCase() === "realdeal.mp4") {
@@ -183,8 +190,22 @@ function commands(msg) {
         else if (args[1].toLowerCase() === "dtrash") {
             yield playYoutube(msg, "https://youtu.be/McLbBiK-poE");
         }
+        else if (args[1].toLowerCase() === "wii") {
+            yield playYoutube(msg, "https://youtu.be/LYN6DRDQcjI", 0.5);
+        }
+        else if (args[1].toLowerCase() === "windowsxp") {
+            yield playYoutube(msg, "https://youtu.be/6Joyj0dmkug", 10);
+        }
         else if (args[1].toLowerCase() === "play") {
             yield playYoutube(msg, args[2]);
+        }
+        else if (args[1].toLowerCase() === "pause") {
+            if (voiceMap[msg.guild.id] && voiceMap[msg.guild.id].dispatcher)
+                voiceMap[msg.guild.id].dispatcher.pause();
+        }
+        else if (args[1].toLowerCase() === "resume") {
+            if (voiceMap[msg.guild.id] && voiceMap[msg.guild.id].dispatcher)
+                voiceMap[msg.guild.id].dispatcher.resume();
         }
         else if (args[1].toLowerCase() === "say") {
             if (msg.content.length <= msg.content.indexOf("say") + 4 + 20)
@@ -200,6 +221,9 @@ function commands(msg) {
                 yield msg.reply("I just find it pathetic with the way you act. Stop acting like a 7 year old. Show a little bot of respect for yourself. Scum");
             else
                 getStetingsMap(msg.guild.id).nofunEnabled = !getStetingsMap(msg.guild.id).nofunEnabled;
+        }
+        else {
+            yield msg.reply(help);
         }
     });
 }
