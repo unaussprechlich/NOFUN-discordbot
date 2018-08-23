@@ -1,34 +1,23 @@
-import {Client, Message, VoiceConnection} from "discord.js";
+import {Client, Message, PresenceData, VoiceConnection} from "discord.js";
 import * as AWS from "aws-sdk"
-import * as stream from "stream"
+import * as Stream from "stream"
 import * as ytdl from "ytdl-core"
+import * as fs from "fs";
 import {VoiceId} from "aws-sdk/clients/polly";
-
-if(!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY)
-    throw "Provide AWS credentials!";
-
-AWS.config.accessKeyId = process.env.AWS_ACCESS_KEY_ID.toString();
-AWS.config.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY.toString();
-
-// Create an Polly client
-const Polly = new AWS.Polly({
-    signatureVersion: 'v4',
-    region: 'eu-west-1'
-});
-
-const discord = new Client();
-
-async function start() {
-    await discord.login(process.env.DISCORD_TOKEN);
-    await discord.user.setPresence({game : {name : "with ze waifu pillow!", type : "PLAYING", url : "https://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8"}});
-}
+import {Readable} from "stream";
 
 
+
+const status : PresenceData[] = [
+    {game : {name : "with ze waifu pillow!", type : "PLAYING", url : "https://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8"}},
+    {game : {name : "!nofun help", type :  "PLAYING" , url : "https://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8"}},
+    {game : {name : "\_RealDeal_.mp4", type :  "WATCHING" , url : "https://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8"}}
+];
 
 const imageQuotes : String[] = [
-    "https://gyazo.com/7172eb49dcf22f5a1e503d129bb31841",
-    "https://www.youtube.com/watch?v=JysJqkueMoI",
-    "https://youtu.be/SO9NxRoydOE",
+    "https://imgur.com/Ht07jm0",
+    "https://imgur.com/RYNlB2f",
+    "https://i.gyazo.com/7172eb49dcf22f5a1e503d129bb31841.png",
     "https://i.imgur.com/72yJr1m.png",
     "https://i.imgur.com/l5o1sC5.png",
     "https://imgur.com/WNvCDZI",
@@ -36,9 +25,9 @@ const imageQuotes : String[] = [
     "https://i.imgur.com/futQ7Pq.png",
     "https://i.imgur.com/7TOBbuh.png",
     "https://cdn.discordapp.com/emojis/442718697480519690.gif?v=1",
-    "https://gyazo.com/ddd2b61be6bfd21c84f4657a1d2be949?token=0876d9bb8f12f3b829eb023e34e54aec",
-    "https://gyazo.com/05e2593e8e68f9f7132977d4f196c2bc",
-    "https://gyazo.com/a0b1ec50976179a23f0b236e46b0cc6c",
+    "https://gyazo.com/ddd2b61be6bfd21c84f4657a1d2be949.jpg",
+    "https://gyazo.com/05e2593e8e68f9f7132977d4f196c2bc.png",
+    "https://gyazo.com/a0b1ec50976179a23f0b236e46b0cc6c.png",
     "https://imgur.com/iyECVDr",
     "https://imgur.com/80DFTd2",
     "https://imgur.com/wwCHZPZ",
@@ -46,7 +35,7 @@ const imageQuotes : String[] = [
 ];
 
 const textQuotes : String[] = [
-    "Reasons for me Disliking Soul\n First off this is me, _RealDeal_ only. No one else is Shadow or anyone else on the server have any affiliation to this document.\n Rereading this document I have realized that I have generalized a lot about Soul not every member does these things so don't think that I think everyone in Soul does this shit.\n"
+    "Reasons for me Disliking Soul\n First off this is me, \_RealDeal_ only. No one else is Shadow or anyone else on the server have any affiliation to this document.\n Rereading this document I have realized that I have generalized a lot about Soul not every member does these things so don't think that I think everyone in Soul does this shit.\n"
     ,"Member Stealers\n I see on the forums that some of the officers have a link to the page in their signature, where the people can apply to on the forums, that's cool, except for the fact that it always says applications are closed. This must mean that Soul is not accepting anymore members, right? WRONG they have accepted members from other guilds. An officer stated, \"Well we like to accept people that we know first before we accept random people.\" How do they know that those applicants aren't the most amazing players and they just haven't met them yet. Instead they decide to hurt other guilds and take their members without even contacting the leaders to ask if it's ok.\n Stat Hungry/cheating\n"
     ,"I have observed that Soul cares a lot for stats which is understandable because I do too. I do not approve of certain members who decide to glitch out of maps and farm damage and healing. 2 million damage in one game is outrageous. If one gets 100k damage per game on average, that is 20 games that that person just bypassed. A certain officer said: \"We were just trying to test the limits of warlords, we glitches out of the map so we would not have affected the players actually playing the game.\" Well this does, that many high levels not playing is seriously going to throw off the team balancer.\n"
     ,"Speaking of Team Balancer\n Recently I've been playing a lot more TDM because Soul plays TDM a lot and I like to ruin their games; however, I have noticed that Soul likes to purposefully stack parties on the same team. i.e. I've seen a party of two 90s and an 84 join, and then a party of two low level shamans - you know who you are. I dislike shamans but that is another topic. When you are using an known overpowered class on an already op team verse a bunch of low levels they are going to feel discouraged and their warlords experience will be slightly less enjoyable. Not even I can beat these overpowered parties (I know I'm arrogant but hey I can back it up unlike a lot of Soul members (wait that's my next point forget what I just said)).\n"
@@ -56,7 +45,7 @@ const textQuotes : String[] = [
     ,"Rumors\n I have heard rumors that rumors have been spreading around inside of the good ole' Soul gchat about me being a toxic player. I am not, I like to talk to the lower levels on my team and give them advice and collaborate with the higher levels to make sure we get the win. I am assuming that some of the Soul members have overheard mine and Uwawa's(one of my many baes) conversations on teamspeak about Soul and have relayed what we have said to their officers. What I say on teamspeak does not reflect how I act in game. I may have a burning hatred for Soul but I put on a nice facade when it comes to in game.\n"
     ,"Cryomancers\n I cannot stand crying band wagoners \"Oh!!!! I just faced Uwawa and found out cryo is op lemme change from pyro to cryo!!!1!11!\" The class is fucking broken (Ice barrier should last for only 6 seconds when it lasts for 10) The sad part is they give me as much trouble as 90 cryos as a random  talented 40 cryo. I Also see those cryos complain about shamans. WTF at least shaman is not broken, it's just overpowered.\n"
     ,"Last Thing\n I see many people in Soul brag about how amazing the guild is in the lobbies. I do not approve of arrogance when you can't back up. This is because I will face said people solo with a few good shamans on my side (can't believe I actually like shamans sometimes) and we dominate those people if you cannot walk your talk then you need a muzzle.\n"
-    ,"_RealDeal_\n"
+    ,"\_RealDeal_\n"
     ,"Again I am going to reiterate that no one else in shadow or on the server was involved in this document. This was 100% me no one even knows this document exists I just thought Soul needed to know why I strongly dislike them. These are also many possible reasons why other people in the community dislike you guys, and I'm SURE that I have missed a couple more myself, and I'm SURE that I will find other reasons in the future\n"
     ,"P.S. When a good GvG system comes out I challenge Soul to a battle. We may not have all 90s but our guild is built on something that Soul will never have. We look for the mid levels that have great skill and potential that will one day become monsters on the battlefield while Soul Just accepts anyone high level.\n"
     ,"#Paladin4Life\n"
@@ -64,7 +53,7 @@ const textQuotes : String[] = [
     , "I enjoy a decent amount of people in your guild and the people I enjoy are the only people who aren’t overall assholes.  I also have to include that the members you have are not caring towards anyone else in the community. I can bet that not a single person that is in your guild has gone into a party with someone lvl 70 or below in weeks. And by saying this stuff I have to say my flaws in this fight with Soul. I have participated in many fights and I was responsible for getting Eloquin banned, but Eloquin could have stopped this by not telling me to kill myself. I also start some fights in games or join in the banter but I have been trying to clean up my act. So from this I would appreciate it if you could fix up your guild. Maybe change to kind of act like Shadow, and I’m not saying Shadow is totally perfect because it does have flaws to. But for you guys maybe instead of only recruiting lvl 80+’s go for lvl 60’s and 70’s too. Also please try to enforce on your members to show kindness to other players and not ruin everyone else’s playing experience just so they can have better stats.\n"
     , "Thank you for taking the time to read this. <3\n"
 
-    , "_RealDeal_ & Shadow\n Let me first address how many problems RealDeal has caused, whether it is within Shadow, between people, or within the guild. Sure, you can say this document is suppose to “expose” RealDeal and what type of horrible guild Shadow has been running under lately.\n"
+    , "\_RealDeal_ & Shadow\n Let me first address how many problems RealDeal has caused, whether it is within Shadow, between people, or within the guild. Sure, you can say this document is suppose to “expose” RealDeal and what type of horrible guild Shadow has been running under lately.\n"
     , "A few officers of Shadow left, you may know them and you may not. But I’m not planning to pull anybody into this document unless their name is RealDeal. I’m not going to say their names, but yeah a few officers of Shadow left. The reason they left was mainly because of RealDeal, causing a separation within their beliefs and because of that they left. One said that their words didn’t matter in the guild and that they didn’t feel like they mattered as an officer. Ever since their departing in Shadow, RealDeal has been fabricating and creating lies to get them back in his hands.\n"
     , "RealDeal believes that Steal My Acorns, a very respectful guild in my eyes, is a toxic guild and he is willing to take them all on. Steal My Acorns could be toxic at times, but RealDeal has always been talking shit and smack about Acorns knowing that he wouldn’t be able to even do anything about it. He’s always talking shit about specific people in Acorns, acting like he is more superior then they are. Let me tell you one thing, you aren’t buddy. His ex-officers saw this as a separation between each other because his ex-officers thought that Acorns was a very respectable guild and RealDeal should get to know them better, he denied the officer and continued his path of hating on the guild as well as the people in it. Just because Steal My Acorns is more superior than you, doesn’t mean you have to be toxic about them Real :).\n"
     , "When RealDeal lost his relationship with one of his officers, he decided to have another relationship with someone else and RealDeal lost it again not too long. She ended their relationship because RealDeal was playing Warlords way too much and she felt like he didn’t care about their relationship, nor her. Because of this depressing story, she was enraged with anger and she went crazy. Wanting to kill RealDeal in real life, physically hurting him. Congratulations RealDeal, how about you worry about your relationship and not a damn block game!\n"
@@ -99,6 +88,29 @@ const totalQuotes = (() => {
     return arr;
 })();
 
+if(!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY)
+    throw "Provide AWS credentials!";
+
+AWS.config.accessKeyId = process.env.AWS_ACCESS_KEY_ID.toString();
+AWS.config.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY.toString();
+
+// Create an Polly client
+const Polly = new AWS.Polly({
+    signatureVersion: 'v4',
+    region: 'eu-west-1'
+});
+
+const discord = new Client();
+
+async function start() {
+    await discord.login(process.env.DISCORD_TOKEN);
+    console.log("Discord Connected!");
+
+    setInterval(() => {
+        discord.user.setPresence(status[Math.floor(Math.random()*status.length)]).catch(console.error);
+    }, 1000 * 10);
+}
+
 const voiceMap : { [guild : string]: VoiceConnection} = {};
 
 async function pollyTTS(msg : Message, speaker? : VoiceId, text? : string){
@@ -113,24 +125,28 @@ async function pollyTTS(msg : Message, speaker? : VoiceId, text? : string){
             return;
         }
         if (data.AudioStream instanceof Buffer) {
-            const bufferStream = new stream.PassThrough();
-            bufferStream.end(data.AudioStream);
-            voiceMap[msg.guild.id].playStream(bufferStream);
-            voiceMap[msg.guild.id].once("end", reason => {
-                voiceMap[msg.guild.id].disconnect();
-                delete voiceMap[msg.guild.id];
-            });
+            const stream = new Stream.PassThrough();
+            stream.end(data.AudioStream);
+            playStream(msg, stream).catch(console.error)
         }
     }));
 }
 
 async function playYoutube(msg : Message, url : string){
+    if(!url.match(/http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/)){
+        await msg.reply("This is not a youtube link you worthless cunt!");
+        return;
+    } else {
+        await playStream(msg, ytdl(url, { filter: 'audioonly' }))
+    }
+
+}
+
+async function playStream(msg : Message, stream : Readable){
     await joinVoice(msg);
-    voiceMap[msg.guild.id].playStream(ytdl(
-        url,
-        { filter: 'audioonly' })
-    );
-    voiceMap[msg.guild.id].once("end", reason => {
+    const dispatcher = voiceMap[msg.guild.id].playStream(stream);
+    dispatcher.once("end", reason => {
+        if(reason === undefined) return;
         voiceMap[msg.guild.id].disconnect();
         delete voiceMap[msg.guild.id];
     });
@@ -140,16 +156,15 @@ async function commands(msg : Message){
     const args = msg.content.split(" ");
     console.log(new Date().toISOString() + " | "+ msg.guild.name +"#" +msg.guild.id + " | " + msg.author.tag + " | " + msg.content);
     if(args[1] === "help"){
-        await msg.reply("\n#nofun help - help\n" +
-            "#nofun stop\n" +
-            "#nofun RealDeal.mp4\n" +
-            "#nofun exposed\n" +
-            "#nofun DTRASh\n" +
-            "#nofun play { url }\n" +
-            "#nofun say { text }\n" +
-            "#nofun say help\n" +
-            "#nofun invitelink\n" +
-            "\nno fun - NO FUN!!11!!!1111\n"
+        await msg.reply("\n!nofun help - help\n" +
+            "!nofun RealDeal.mp4\n" +
+            "!nofun exposed\n" +
+            "!nofun DTRASh\n" +
+            "!nofun play { url }\n" +
+            "!nofun say { text }\n" +
+            "!nofun invitelink\n" +
+            "\n!nofun stop\n" +
+            "\nPlz don not say NO FUN or I get triggered and I ban you from the warlords discord FOREVER :(\n"
         )
     } else if (args[1] === "stop"){
         if(voiceMap[msg.guild.id]){
@@ -161,10 +176,12 @@ async function commands(msg : Message){
         await playYoutube(msg, "https://youtu.be/MH_t2NIklMg")
     } else if (args[1].toLowerCase() === "exposed"){
         await playYoutube(msg, "https://youtu.be/JysJqkueMoI")
+    } else if (args[1].toLowerCase() === "dtrash"){
+        await playYoutube(msg, "https://youtu.be/McLbBiK-poE")
     } else if (args[1].toLowerCase() === "play"){
         await playYoutube(msg, args[2])
     } else if(args[1].toLowerCase() === "say"){
-        await pollyTTS(msg, "Hans", msg.content.substring(msg.content.indexOf("say")))
+        await pollyTTS(msg, "Joey", msg.content.substring(msg.content.indexOf("say")))
     } else if(args[1].toLowerCase() === "invitelink"){
         await msg.reply("Add me PLZZZZZZ \nhttps://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8" )
     }
@@ -173,20 +190,26 @@ async function commands(msg : Message){
 async function joinVoice(msg : Message){
     if (msg.member.voiceChannel)
         voiceMap[msg.guild.id] = await msg.member.voiceChannel.join();
+    else await msg.reply("Wtf do you want you pathetic cunt. Join a voice channel to use the !nofun command. Otherwise stfu wortless treash.")
 }
 
 async function noFun(msg : Message){
     if(msg.author.id === discord.user.id) return;
     console.log(new Date().toISOString() + " | " + msg.guild.name +"#" +msg.guild.id + " | " + msg.author.tag + " triggered RealDeal");
-    if(msg.guild.emojis.find("name", "nofun"))
-        msg.react(msg.guild.emojis.find("name", "nofun")).catch(console.error);
+
+    if(!msg.guild.emojis.find((value) => value.name.toLowerCase() === "nofun")){
+        await msg.guild.createEmoji(fs.readFileSync("emote.png"), "nofun") ;
+    }
+
+    await msg.react(msg.guild.emojis.find((value) => value.name.toLowerCase() === "nofun"));
+
     if (msg.member.voiceChannel) await pollyTTS(msg);
-    else msg.reply(totalQuotes[Math.floor(Math.random()*totalQuotes.length)]).catch(console.error);
+    else await msg.reply(totalQuotes[Math.floor(Math.random()*totalQuotes.length)]);
 }
 
 discord.on("message", async msg =>{
     try{
-        if(msg.content.toUpperCase().match(/^#NOFUN/))
+        if(msg.content.toUpperCase().match(/^!NOFUN/))
             await commands(msg);
          else if (msg.content.toUpperCase().match(/NO *FUN/))
             await noFun(msg);
@@ -195,12 +218,5 @@ discord.on("message", async msg =>{
     }
 });
 
-discord.on('ready',  () =>{
-    try{
-        console.log("Discord Connected!");
-    }catch (e) {
-        console.error(e)
-    }
-});
 
 start().catch(console.error);
