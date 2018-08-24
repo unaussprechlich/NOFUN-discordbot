@@ -16,6 +16,8 @@ export const imageQuotes : String[] = [
     "https://imgur.com/80DFTd2",
     "https://imgur.com/wwCHZPZ",
     "https://imgur.com/WeGJicX"
+    "https://i.gyazo.com/401e30ecef9118eb7e429655c2944449.png"
+    "https://i.gyazo.com/401a7d36e25d6ddca275cb3f04c2d617.png"
 ];
 
 export const textQuotes : String[] = [
@@ -59,6 +61,8 @@ export const textQuotes : String[] = [
     ,"A smaller, side thing is I like seeing myself get better. Every game I join I tell myself 1 thing that I am going to improve on, then I focus on trying to improve that. Whether it be my consecrate placement, timing of holy radiances, map awareness, cycling damage powerups, using my horse efficiently, cycling dom points, whatever it is. If I get a little better than I am proud of myself. Many people do not like to play this way and do not find it fun to actively improve themselves which is fine (no it isn't I hate those people, screw you guys for not caring about the game, getting put on my team and forcing me to carry you. screw you) but I am very competitive, winning is fun, therefore I do everything I can to win (besides playing cryo and defender of course) I find it enjoyable when I challenge myself to be the best that I can be, now only if I could do that personality wise, then maybe I wouldn't be such a terrible person hahahahaha I hate myself"
     ,"Realdeal x Crafty - Based on a true story \n Just saying ever since I got back from the good ole' ban she has been the one coming to me. She has been pestering me about everything and I told it plain and simple to her in a private chat why I don't like her. Isn't being honest the right thing to do? Knowing that I would only just make the situation worse from then on, I removed her, and put her on my /ignore. This whole thread was made because she was upset that I wouldn't talk to her yesterday. Even though if I did it would only make everything a hell of a lot worse. Long story short, she is the one that keeps coming to me, she is the one that keeps asking why I don't like her, and I am being honest with her (which apparently is a bad thing), and then I am being the proactive one knowing that communicating with her will never solve anything.\n"
     ,"A 4 person Dom party can be very taxing on the team, and is very hard for those 4 players to carry."
+    "I'm getting targetted up the asshole"
+    "I find it pathetic that I am such a shit person"
 ];
 
 export const totalQuotes = (() => {
