@@ -7,7 +7,6 @@ import {VoiceId} from "aws-sdk/clients/polly";
 import {Readable} from "stream";
 import {textQuotes, totalQuotes} from "./Quotes";
 import {links} from "./Links";
-import {message} from "aws-sdk/clients/sns";
 
 const status : PresenceData[] = [
     {game : {name : "with ze waifu pillow!", type : "PLAYING", url : "https://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8"}},
@@ -47,7 +46,7 @@ const settingsMap : { [guild : string]: Settings} = {};
 
 
 async function pollyTTS(msg : Message, speaker? : VoiceId, text? : string){
-    if(!text) text = textQuotes[Math.floor(Math.random()*textQuotes.length)].toString();
+    if(!text) text = textQuotes[Math.floor(Math.random()*textQuotes.length)].toString() as string;
     Polly.synthesizeSpeech({
         Text : text,
         VoiceId: speaker ? speaker : "Joey",
