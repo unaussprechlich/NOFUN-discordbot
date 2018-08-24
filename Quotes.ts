@@ -16,6 +16,8 @@ export const imageQuotes : String[] = [
     "https://imgur.com/80DFTd2",
     "https://imgur.com/wwCHZPZ",
     "https://imgur.com/WeGJicX"
+    "https://i.gyazo.com/401e30ecef9118eb7e429655c2944449.png"
+    "https://i.gyazo.com/401a7d36e25d6ddca275cb3f04c2d617.png"
 ];
 
 export const textQuotes : String[] = [
