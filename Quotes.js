@@ -63,7 +63,7 @@ exports.textQuotes = [
     "NO FUN"
     "I'm getting targetted up the asshole"
     "I find it pathetic that I am such a shit person"
-    "
+    
 ];
 exports.totalQuotes = (() => {
     const arr = [];
