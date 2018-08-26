@@ -119,25 +119,28 @@ async function commands(msg : Message){
             await msg.reply("Okay - Worthless piece of shit I stop NOFUN! Pathetic cunt!")
         }
     } else if (args[1].toLowerCase() === "_realdeal_.mp4" || args[1].toLowerCase() === "realdeal.mp4" ){
-        await playYoutube(msg, "https://youtu.be/MH_t2NIklMg")
+        await playYoutube(msg, "https://youtu.be/MH_t2NIklMg", 0.6)
+
+    } else if (args[1].toLowerCase() === "earrape"){
+        await playYoutube(msg, "https://youtu.be/UkCih5DLKfI", 10)
 
     } else if (args[1].toLowerCase() === "exposed"){
-        await playYoutube(msg, "https://youtu.be/JysJqkueMoI")
+        await playYoutube(msg, "https://youtu.be/JysJqkueMoI", 0.6)
 
     } else if (args[1].toLowerCase() === "dtrash"){
-        await playYoutube(msg, "https://youtu.be/McLbBiK-poE")
+        await playYoutube(msg, "https://youtu.be/McLbBiK-poE", 0.6)
 
     } else if (args[1].toLowerCase() === "wii"){
-        await playYoutube(msg, "https://youtu.be/LYN6DRDQcjI", 0.5)
+        await playYoutube(msg, "https://youtu.be/LYN6DRDQcjI", 0.6)
 
     } else if (args[1].toLowerCase() === "windowsxp"){
         await playYoutube(msg, "https://youtu.be/6Joyj0dmkug", 10)
 
     } else if (args[1].toLowerCase() === "ytmeme"){
-        await playYoutube(msg, links[Math.floor(Math.random()*links.length)].toString(), 1)
+        await playYoutube(msg, links[Math.floor(Math.random()*links.length)].toString(), 0.6)
 
     } else if (args[1].toLowerCase() === "play") {
-        await playYoutube(msg, args[2])
+        await playYoutube(msg, args[2], 0.6)
 
     } else if (args[1].toLowerCase() === "pause"){
         if(voiceMap[msg.guild.id] && voiceMap[msg.guild.id].dispatcher) voiceMap[msg.guild.id].dispatcher.pause()
