@@ -15,6 +15,10 @@ const ytdl = require("ytdl-core");
 const fs = require("fs");
 const Quotes_1 = require("./Quotes");
 const Links_1 = require("./Links");
+const sounds_1 = require("./sounds/sounds");
+console.log("\n\n\n====================LOADING SOUNDS=======================");
+console.log(JSON.stringify(sounds_1.SOUNDS, null, 2));
+console.log("=========================================================\n\n\n");
 const status = [
     { game: { name: "with ze waifu pillow!", type: "PLAYING", url: "https://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8" } },
     { game: { name: "!nofun help", type: "PLAYING", url: "https://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8" } },
@@ -38,56 +42,8 @@ function start() {
         }, 1000 * 10);
     });
 }
-const voiceMap = {};
-const settingsMap = {};
-function pollyTTS(msg, speaker, text) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!text)
-            text = Quotes_1.textQuotes[Math.floor(Math.random() * Quotes_1.textQuotes.length)].toString();
-        Polly.synthesizeSpeech({
-            Text: text,
-            VoiceId: speaker ? speaker : "Joey",
-            OutputFormat: "mp3",
-        }, ((err, data) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            if (data.AudioStream instanceof Buffer) {
-                const stream = new Stream.PassThrough();
-                stream.end(data.AudioStream);
-                playStream(msg, stream).catch(console.error);
-            }
-        }));
-    });
-}
-function playYoutube(msg, url, volume) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!url.match(/http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/)) {
-            yield msg.reply("This is not a youtube link - worthless cunt!");
-            return;
-        }
-        else {
-            yield playStream(msg, ytdl(url, { filter: 'audioonly' }), volume);
-        }
-    });
-}
-function playStream(msg, stream, volume) {
-    return __awaiter(this, void 0, void 0, function* () {
-        yield joinVoice(msg);
-        const dispatcher = voiceMap[msg.guild.id].playStream(stream, {
-            passes: 5,
-            volume: volume
-        });
-        dispatcher.once("end", reason => {
-            if (reason === undefined)
-                return;
-            voiceMap[msg.guild.id].disconnect();
-            delete voiceMap[msg.guild.id];
-        });
-    });
-}
-const help = "It’s your move.\n\n!nofun help - help\n" +
+const help = "It’s your move.\n\n" +
+    "**Commands**\n" +
     "!nofun RealDeal.mp4\n" +
     "!nofun exposed\n" +
     "!nofun DTRASh\n" +
@@ -95,14 +51,27 @@ const help = "It’s your move.\n\n!nofun help - help\n" +
     "!nofun windowsxp\n" +
     "!nofun wii\n" +
     "!nofun ytmeme\n" +
-    "\n!nofun play { url }\n" +
-    "!nofun say { text }\n" +
-    "!nofun invitelink\n" +
-    "\n!nofun toggle\n" +
+    "!nofun dog's (*members*)\n" +
+    "!nofun pls *sound*\n" +
+    "\t *SOUNDS: " + sounds_1.CATEGORIES_STRING + "!* \n" +
+    "!nofun play *url*\n" +
+    "!nofun say *text*\n" +
+    "!nofun rage *text*\n" +
     "\n!nofun stop\n" +
     "!nofun pause\n" +
     "!nofun resume\n" +
+    "\n**Settings**\n" +
+    "!nofun toggle\n" +
+    "\n**Invite me:** !nofun invitelink\n" +
     "\nPlz don not say NO FUN or I get triggered and I ban you from this Discord server - FOREVER :rage: \n";
+function pls(msg, what) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (sounds_1.CATEGORIES.indexOf(what) === -1)
+            yield msg.reply("Fuck off. I can't find the sound for **" + what + "**! You should try **[" + sounds_1.CATEGORIES_STRING + "]** instead, pathetic cunt!");
+        else
+            yield playFile(msg, "./sounds/" + what + "/" + sounds_1.SOUNDS[what][Math.floor(Math.random() * sounds_1.SOUNDS[what].length)]);
+    });
+}
 function commands(msg) {
     return __awaiter(this, void 0, void 0, function* () {
         const args = msg.content.split(" ");
@@ -113,9 +82,10 @@ function commands(msg) {
         }
         else if (args[1] === "stop") {
             if (voiceMap[msg.guild.id]) {
-                voiceMap[msg.guild.id].disconnect();
-                delete voiceMap[msg.guild.id];
-                yield msg.reply("Okay - Worthless piece of shit I stop NOFUN! Pathetic cunt!");
+                if (msg.member.voiceChannel)
+                    yield pollyTTS(msg, "Joey", "NOFUN! Pathetic cunt!", 100);
+                else
+                    yield msg.reply("Okay, okay  - Worthless piece of shit, I stop NOFUN! Pathetic cunt!");
             }
         }
         else if (args[1].toLowerCase() === "_realdeal_.mp4" || args[1].toLowerCase() === "realdeal.mp4") {
@@ -135,6 +105,23 @@ function commands(msg) {
         }
         else if (args[1].toLowerCase() === "windowsxp") {
             yield playYoutube(msg, "https://youtu.be/6Joyj0dmkug", 10);
+        }
+        else if (args[1].toLowerCase() === "dogs" || args[1].toLowerCase() === "dog's") {
+            if (msg.mentions.members && msg.mentions.members.size !== 0) {
+                for (const member of msg.mentions.members.array()) {
+                    yield msg.channel.send("DOG'S <@" + member.id + ">");
+                }
+            }
+            else {
+                const members = msg.guild.members.array();
+                yield msg.channel.send("DOG'S <@" + members[Math.floor(Math.random() * members.length)].id + ">");
+            }
+        }
+        else if (args[1].toLowerCase() === "pls") {
+            if (args[2])
+                yield pls(msg, args[2]);
+            else
+                yield msg.reply("Fuck off! There us no sound, try **[" + sounds_1.CATEGORIES_STRING + "]** instead, pathetic cunt!");
         }
         else if (args[1].toLowerCase() === "ytmeme") {
             yield playYoutube(msg, Links_1.links[Math.floor(Math.random() * Links_1.links.length)].toString(), 0.6);
@@ -156,6 +143,12 @@ function commands(msg) {
             else
                 yield pollyTTS(msg, "Joey", msg.content.substring(msg.content.indexOf("say") + 4));
         }
+        else if (args[1].toLowerCase() === "rage") {
+            if (msg.content.length <= msg.content.indexOf("rage") + 4 + 20)
+                yield msg.reply("I don't care if you do this bullshit to me. But your message is to short!");
+            else
+                yield pollyTTS(msg, "Joey", msg.content.substring(msg.content.indexOf("rage") + 4), 100);
+        }
         else if (args[1].toLowerCase() === "invitelink") {
             yield msg.reply("Add me PLZZZZZZ \nhttps://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8");
         }
@@ -163,32 +156,16 @@ function commands(msg) {
             if (!msg.member.hasPermission("ADMINISTRATOR"))
                 yield msg.reply("I just find it pathetic with the way you act. Stop acting like a 7 year old. Show a little bot of respect for yourself. Scum");
             else
-                getStetingsMap(msg.guild.id).nofunEnabled = !getStetingsMap(msg.guild.id).nofunEnabled;
+                getSettingsMap(msg.guild.id).nofunEnabled = !getSettingsMap(msg.guild.id).nofunEnabled;
         }
         else {
             yield msg.reply(help);
         }
     });
 }
-function getStetingsMap(guildID) {
-    if (settingsMap[guildID])
-        return settingsMap[guildID];
-    settingsMap[guildID] = {
-        nofunEnabled: true
-    };
-    return settingsMap[guildID];
-}
-function joinVoice(msg) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (msg.member.voiceChannel)
-            voiceMap[msg.guild.id] = yield msg.member.voiceChannel.join();
-        else
-            yield msg.reply("Wtf do you want you pathetic cunt. Join a voice channel to use the !nofun command. Otherwise stfu wortless treash.");
-    });
-}
 function noFun(msg) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!getStetingsMap(msg.guild.id).nofunEnabled)
+        if (!getSettingsMap(msg.guild.id).nofunEnabled)
             return;
         if (msg.author.id === discord.user.id)
             return;
@@ -201,6 +178,90 @@ function noFun(msg) {
             yield pollyTTS(msg);
         else
             yield msg.reply(Quotes_1.totalQuotes[Math.floor(Math.random() * Quotes_1.totalQuotes.length)]);
+    });
+}
+const voiceMap = {};
+const settingsMap = {};
+function getSettingsMap(guildID) {
+    if (settingsMap[guildID])
+        return settingsMap[guildID];
+    settingsMap[guildID] = {
+        nofunEnabled: true
+    };
+    return settingsMap[guildID];
+}
+function playFile(msg, file, volume) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield joinVoice(msg);
+        const dispatcher = voiceMap[msg.guild.id].playFile(file, {
+            passes: 5,
+            volume: volume
+        });
+        dispatcher.once("end", reason => {
+            if (reason === undefined)
+                return;
+            voiceMap[msg.guild.id].disconnect();
+            delete voiceMap[msg.guild.id];
+        });
+    });
+}
+function pollyTTS(msg, speaker, text, volume) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!text)
+            text = Quotes_1.textQuotes[Math.floor(Math.random() * Quotes_1.textQuotes.length)].toString();
+        Polly.synthesizeSpeech({
+            Text: text,
+            VoiceId: speaker ? speaker : "Joey",
+            OutputFormat: "mp3",
+        }, ((err, data) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            if (data.AudioStream instanceof Buffer) {
+                const stream = new Stream.PassThrough();
+                stream.end(data.AudioStream);
+                playStream(msg, stream, volume).catch(console.error);
+            }
+        }));
+    });
+}
+function playYoutube(msg, url, volume) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!url.match(/http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/)) {
+            yield msg.reply("This is not a youtube link - worthless cunt!");
+            return;
+        }
+        else {
+            yield playStream(msg, ytdl(url, { filter: 'audioonly' }), volume);
+        }
+    });
+}
+function joinVoice(msg) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (msg.member.voiceChannel) {
+            voiceMap[msg.guild.id] = yield msg.member.voiceChannel.join();
+            return voiceMap[msg.guild.id];
+        }
+        else {
+            yield msg.reply("Wtf do you want you pathetic cunt. Join a voice channel to use the !nofun command. Otherwise stfu wortless treash.");
+            return null;
+        }
+    });
+}
+function playStream(msg, stream, volume) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield joinVoice(msg);
+        const dispatcher = voiceMap[msg.guild.id].playStream(stream, {
+            passes: 5,
+            volume: volume
+        });
+        dispatcher.once("end", reason => {
+            if (reason === undefined)
+                return;
+            voiceMap[msg.guild.id].disconnect();
+            delete voiceMap[msg.guild.id];
+        });
     });
 }
 discord.on("message", (msg) => __awaiter(this, void 0, void 0, function* () {

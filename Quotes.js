@@ -19,7 +19,8 @@ exports.imageQuotes = [
     "https://imgur.com/wwCHZPZ",
     "https://imgur.com/WeGJicX",
     "https://i.gyazo.com/401e30ecef9118eb7e429655c2944449.png",
-    "https://i.gyazo.com/401a7d36e25d6ddca275cb3f04c2d617.png"
+    "https://i.gyazo.com/401a7d36e25d6ddca275cb3f04c2d617.png",
+    "https://imgur.com/PlTrXdf"
 ];
 exports.textQuotes = [
     "Before anyone accuses me, yes I admit I am salty I lost 3 times today on Gorge due to its map design. Multiple times in the past I have abused Gorge and won because of its sh*tty map design as well. Gorge is just a bad map, and I am going to break down as to why it is bad.\n Okay, here is why Gorge is a bad map.\n Aesthetically I love Gorge. I genuinely think the map looks great. Game-play wise it is a monkey fiesta. There are a few things that make the map bad to play on.",
