@@ -9,10 +9,6 @@ import {textQuotes, totalQuotes} from "./Quotes";
 import {links} from "./Links";
 import {SOUNDS, CATEGORIES, CATEGORIES_STRING} from "./sounds/sounds"
 
-console.log("\n\n\n====================LOADING SOUNDS=======================");
-console.log(JSON.stringify(SOUNDS, null, 2));
-console.log("=========================================================\n\n\n");
-
 const status : PresenceData[] = [
     {game : {name : "with ze waifu pillow!", type : "PLAYING", url : "https://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8"}},
     {game : {name : "!nofun help", type :  "PLAYING" , url : "https://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8"}},

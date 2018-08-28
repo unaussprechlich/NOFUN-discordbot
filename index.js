@@ -16,9 +16,6 @@ const fs = require("fs");
 const Quotes_1 = require("./Quotes");
 const Links_1 = require("./Links");
 const sounds_1 = require("./sounds/sounds");
-console.log("\n\n\n====================LOADING SOUNDS=======================");
-console.log(JSON.stringify(sounds_1.SOUNDS, null, 2));
-console.log("=========================================================\n\n\n");
 const status = [
     { game: { name: "with ze waifu pillow!", type: "PLAYING", url: "https://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8" } },
     { game: { name: "!nofun help", type: "PLAYING", url: "https://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8" } },
