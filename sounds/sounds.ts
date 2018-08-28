@@ -12,5 +12,3 @@ for(const folder of readdirSync("./sounds")){
         SOUNDS[folder] = readdirSync("./sounds/" + folder);
     }
 }
-
-
