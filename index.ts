@@ -237,6 +237,7 @@ async function playStream(msg : Message, stream : Readable, volume? : number | 1
 
 discord.on("message", async msg =>{
     try{
+        if(msg.author.bot) return;
         if(msg.content.toUpperCase().match(/^!NOFUN/))
             await commands(msg);
          else if (msg.content.toUpperCase().match(/NO *FUN/))
