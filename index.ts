@@ -37,9 +37,6 @@ async function start() {
         discord.user.setPresence(status[Math.floor(Math.random()*status.length)]).catch(console.error);
     }, 1000 * 10);
 }
-
-
-
 const help = "It’s your move.\n\n" +
     "**Commands**\n" +
     "!nofun RealDeal.mp4\n" +
@@ -99,6 +96,7 @@ async function commands(msg : Message){
     } else if (args[1].toLowerCase() === "windowsxp") {
         await playYoutube(msg, "https://youtu.be/6Joyj0dmkug", 10)
     } else if (args[1].toLowerCase() === "dogs" || args[1].toLowerCase() === "dog's"){
+        await msg.delete().catch();
         if(msg.mentions.members && msg.mentions.members.size !== 0) {
             for(const member of msg.mentions.members.array()){
                 await msg.channel.send("DOG'S <@" + member.id +">")
