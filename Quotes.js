@@ -69,13 +69,15 @@ exports.textQuotes = [
     "Realdeal x Crafty - Based on a true story \n Just saying ever since I got back from the good ole' ban she has been the one coming to me. She has been pestering me about everything and I told it plain and simple to her in a private chat why I don't like her. Isn't being honest the right thing to do? Knowing that I would only just make the situation worse from then on, I removed her, and put her on my /ignore. This whole thread was made because she was upset that I wouldn't talk to her yesterday. Even though if I did it would only make everything a hell of a lot worse. Long story short, she is the one that keeps coming to me, she is the one that keeps asking why I don't like her, and I am being honest with her (which apparently is a bad thing), and then I am being the proactive one knowing that communicating with her will never solve anything.\n",
     "A 4 person Dom party can be very taxing on the team, and is very hard for those 4 players to carry.",
     "I'm getting targetted up the asshole",
-    "I find it pathetic that I am such a shit person"
+    "I find it pathetic that I am such a shit person",
+    "Hmm that's a lot different than what Cream_Milk said although put in a much nicer way. He said you guys did it because you all are bored of warlords and tried to push the limits of it (at the expense of everyone else) \n If you wanted to bring attention to the issue, when you guys found out you should have contacted a staff member to get the situation under control. I guarantee none of you did that, because that is the type of people that you guys are. Even stopping after 1 game would have been enough, but of course not. After CTF and TDM got fixed you guys went straight to domination; pathetic.\n Then some of your people behaved in a terrible way on the forums about it aka Doom and cream. There is no way you can justify this. You all deserve my disrespect."
 ];
 exports.totalQuotes = (() => {
     const arr = [];
     for (const v of exports.imageQuotes) {
         arr.push(v);
     }
+    for (const v of exports.textQuotes) {
     for (const v of exports.textQuotes) {
         arr.push(v);
     }
