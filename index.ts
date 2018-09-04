@@ -44,6 +44,7 @@ const help = "It’s your move.\n\n" +
     "!nofun DTRASh\n" +
     "!nofun earrape\n" +
     "!nofun windowsxp\n" +
+    "!nofun personalhealer\n" +
     "!nofun wii\n" +
     "!nofun ytmeme\n" +
     "!nofun dog's (*members*)\n" +
@@ -88,10 +89,13 @@ async function commands(msg : Message){
         await playYoutube(msg, "https://youtu.be/JysJqkueMoI", 0.6)
 
     } else if (args[1].toLowerCase() === "dtrash"){
-        await playYoutube(msg, "https://youtu.be/McLbBiK-poE", 0.6)
+        await playYoutube(msg, "https://youtu.be/McLbBiK-poE", 1)
 
     } else if (args[1].toLowerCase() === "wii"){
         await playYoutube(msg, "https://youtu.be/LYN6DRDQcjI", 0.6)
+
+    } else if (args[1].toLowerCase() === "personalhealer"){
+        await playYoutube(msg, "https://youtu.be/cY-hzhJstiw", 0.6)
 
     } else if (args[1].toLowerCase() === "windowsxp") {
         await playYoutube(msg, "https://youtu.be/6Joyj0dmkug", 10)
