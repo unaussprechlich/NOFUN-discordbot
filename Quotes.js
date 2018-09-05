@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+
 exports.imageQuotes = [
     "https://imgur.com/Ht07jm0",
     "https://imgur.com/RYNlB2f",
@@ -23,6 +24,7 @@ exports.imageQuotes = [
     "https://imgur.com/PlTrXdf",
     "https://gyazo.com/ccbbb11456d1b3dcd64c2d7404c5529c"
 ];
+
 exports.textQuotes = [
     "Before anyone accuses me, yes I admit I am salty I lost 3 times today on Gorge due to its map design. Multiple times in the past I have abused Gorge and won because of its sh*tty map design as well. Gorge is just a bad map, and I am going to break down as to why it is bad.\n Okay, here is why Gorge is a bad map.\n Aesthetically I love Gorge. I genuinely think the map looks great. Game-play wise it is a monkey fiesta. There are a few things that make the map bad to play on.",
     "Dear Warlords Player,\n You are cordially invited to the wedding of @beymuch and @TheoreticalMyth. This lovely couple is excited to share their next steps of their journey with the Warlords Community. They may have not been together long, but the beymuch x TheoreticalMyth ship is really strong (I call them beymyth). Please support and celebrate them this Saturday, February 17. The wedding ceremony will take place at @Skarlet_Rayne's plot at 6 pm EST. The after party will begin promptly at 7 pm with a few hearty rounds of Warlords. All are welcome!\n Sincerely,\n A Humble Mage Main",
@@ -78,10 +80,10 @@ exports.totalQuotes = (() => {
     for (const v of exports.imageQuotes) {
         arr.push(v);
     }
+
     for (const v of exports.textQuotes) {
-        for (const v of exports.textQuotes) {
-            arr.push(v);
-        }
-        return arr;
+        arr.push(v);
     }
+
+    return arr;
 });

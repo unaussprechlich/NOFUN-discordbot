@@ -47,6 +47,7 @@ const help = "It’s your move.\n\n" +
     "!nofun soup\n" +
     "!nofun personalhealer\n" +
     "!nofun wii\n" +
+    "!nofun wiisports\n" +
     "!nofun ytmeme\n" +
     "!nofun dog's (*members*)\n" +
     "!nofun pls *sound*\n" +
@@ -94,6 +95,9 @@ async function commands(msg : Message){
 
     } else if (args[1].toLowerCase() === "wii"){
         await playYoutube(msg, "https://youtu.be/LYN6DRDQcjI", 0.6)
+
+    } else if (args[1].toLowerCase() === "wiisports"){
+        await playYoutube(msg, "https://youtu.be/8IFzTDLHuCU", 0.6)
 
     } else if (args[1].toLowerCase() === "soup"){
         await playYoutube(msg, "https://youtu.be/Jp3aR5c3k3U", 1)
