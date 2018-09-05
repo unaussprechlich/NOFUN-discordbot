@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 
 exports.imageQuotes = [
+    "https://i.imgur.com/iyvLL6o.png",
     "https://imgur.com/Ht07jm0",
     "https://imgur.com/RYNlB2f",
     "https://i.gyazo.com/7172eb49dcf22f5a1e503d129bb31841.png",
@@ -86,4 +87,4 @@ exports.totalQuotes = (() => {
     }
 
     return arr;
-});
+})();
