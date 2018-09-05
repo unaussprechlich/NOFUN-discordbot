@@ -72,14 +72,16 @@ exports.textQuotes = [
     "I find it pathetic that I am such a shit person",
     "Hmm that's a lot different than what Cream_Milk said although put in a much nicer way. He said you guys did it because you all are bored of warlords and tried to push the limits of it (at the expense of everyone else) \n If you wanted to bring attention to the issue, when you guys found out you should have contacted a staff member to get the situation under control. I guarantee none of you did that, because that is the type of people that you guys are. Even stopping after 1 game would have been enough, but of course not. After CTF and TDM got fixed you guys went straight to domination; pathetic.\n Then some of your people behaved in a terrible way on the forums about it aka Doom and cream. There is no way you can justify this. You all deserve my disrespect."
 ];
+
 exports.totalQuotes = (() => {
     const arr = [];
     for (const v of exports.imageQuotes) {
         arr.push(v);
     }
     for (const v of exports.textQuotes) {
-    for (const v of exports.textQuotes) {
-        arr.push(v);
+        for (const v of exports.textQuotes) {
+            arr.push(v);
+        }
+        return arr;
     }
-    return arr;
-})();
+});
