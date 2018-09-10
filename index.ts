@@ -49,7 +49,9 @@ const help = "It’s your move.\n\n" +
     "!nofun wii\n" +
     "!nofun wiisports\n" +
     "!nofun ytmeme\n" +
-    "!nofun dog's (*members*)\n" +
+    "!nofun pillowtalking\n" +
+    "!nofun gabage.mp4\n" +
+    "\n!nofun dog's (*members*)\n" +
     "!nofun pls *sound*\n" +
     "\t *SOUNDS: " +  CATEGORIES_STRING +"!* \n"+
     "!nofun play *url*\n" +
@@ -97,7 +99,7 @@ async function commands(msg : Message){
         await playYoutube(msg, "https://youtu.be/LYN6DRDQcjI", 0.6)
 
     } else if (args[1].toLowerCase() === "wiisports"){
-        await playYoutube(msg, "https://youtu.be/8IFzTDLHuCU", 0.6)
+        await playYoutube(msg, "https://youtu.be/8IFzTDLHuCU", 0.5)
 
     } else if (args[1].toLowerCase() === "soup"){
         await playYoutube(msg, "https://youtu.be/Jp3aR5c3k3U", 1)
@@ -105,8 +107,15 @@ async function commands(msg : Message){
     } else if (args[1].toLowerCase() === "personalhealer"){
         await playYoutube(msg, "https://youtu.be/cY-hzhJstiw", 0.8)
 
+    } else if (args[1].toLowerCase() === "pillowtalking"){
+        await playYoutube(msg, "https://youtu.be/NWWeQlXfSa0", 1)
+
+    } else if (args[1].toLowerCase() === "gabage.mp4"){
+        await playYoutube(msg, "https://youtu.be/3MGgvWyDW9g", 1)
+
     } else if (args[1].toLowerCase() === "windowsxp") {
         await playYoutube(msg, "https://youtu.be/6Joyj0dmkug", 10)
+
     } else if (args[1].toLowerCase() === "dogs" || args[1].toLowerCase() === "dog's"){
         await msg.delete().catch();
         if(msg.mentions.members && msg.mentions.members.size !== 0) {
