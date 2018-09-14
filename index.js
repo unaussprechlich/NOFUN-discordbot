@@ -101,6 +101,9 @@ async function commands(msg) {
     else if (args[1].toLowerCase() === "personalhealer") {
         await playYoutube(msg, "https://youtu.be/cY-hzhJstiw", 0.8);
     }
+    else if (args[1].toLowerCase() === "whyubullyme") {
+        await playYoutube(msg, "https://youtu.be/_AFbtgHJriw", 1.3);
+    }
     else if (args[1].toLowerCase() === "pillowtalking") {
         await playYoutube(msg, "https://youtu.be/NWWeQlXfSa0", 1);
     }
