@@ -43,6 +43,9 @@ const help = "It’s your move.\n\n" +
     "!nofun ytmeme\n" +
     "!nofun pillowtalking\n" +
     "!nofun gabage.mp4\n" +
+    "!nofun whyubullyme\n" +
+    "!nofun rapbattle\n" +
+    "!nofun zocken>ficken\n" +
     "\n!nofun dog's (*members*)\n" +
     "!nofun pls *sound*\n" +
     "\t *SOUNDS: " + sounds_1.CATEGORIES_STRING + "!* \n" +
@@ -104,7 +107,13 @@ async function commands(msg) {
     else if (args[1].toLowerCase() === "whyubullyme") {
         await playYoutube(msg, "https://youtu.be/_AFbtgHJriw", 1.3);
     }
+    else if (args[1].toLowerCase() === "rapbattle") {
+        await playYoutube(msg, "https://youtu.be/XYkMga6kP5c", 1);
+    }
     else if (args[1].toLowerCase() === "pillowtalking") {
+        await playYoutube(msg, "https://youtu.be/NWWeQlXfSa0", 1);
+    }
+    else if (args[1].toLowerCase() === "zocken>ficken") {
         await playYoutube(msg, "https://youtu.be/NWWeQlXfSa0", 1);
     }
     else if (args[1].toLowerCase() === "gabage.mp4") {
