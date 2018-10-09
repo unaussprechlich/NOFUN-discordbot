@@ -47,6 +47,8 @@ const help = "It’s your move.\n\n" +
     "!nofun rapbattle\n" +
     "!nofun zocken>ficken\n" +
     "!nofun gayfrog\n" +
+    "!nofun hypixelzoo\n" +
+    "!nofun hypixelpirates\n" +
     "\n!nofun dog's (*members*)\n" +
     "!nofun pls *sound*\n" +
     "\t *SOUNDS: " + sounds_1.CATEGORIES_STRING + "!* \n" +
@@ -106,10 +108,16 @@ async function commands(msg) {
         await playYoutube(msg, "https://youtu.be/cY-hzhJstiw", 0.8);
     }
     else if (args[1].toLowerCase() === "whyubullyme") {
-        await playYoutube(msg, "https://youtu.be/_AFbtgHJriw", 1.5);
+        await playYoutube(msg, "https://youtu.be/_AFbtgHJriw", 2);
     }
     else if (args[1].toLowerCase() === "gayfrog") {
-        await playYoutube(msg, "https://youtu.be/9JRLCBb7qK8", 1);
+        await playYoutube(msg, "https://youtu.be/9JRLCBb7qK8", 0.8);
+    }
+    else if (args[1].toLowerCase() === "hypixelzoo") {
+        await playYoutube(msg, "https://youtu.be/limp1zbeBBk", 1);
+    }
+    else if (args[1].toLowerCase() === "hypixelpirates") {
+        await playYoutube(msg, "https://youtu.be/limp1zbeBBk", 10);
     }
     else if (args[1].toLowerCase() === "rapbattle") {
         await playYoutube(msg, "https://youtu.be/XYkMga6kP5c", 1);
