@@ -191,14 +191,18 @@ async function noFun(msg : Message){
     if(msg.author.id === discord.user.id) return;
     console.log(new Date().toISOString() + " | " + msg.guild.name +"#" +msg.guild.id + " | " + msg.author.tag + " triggered RealDeal");
 
-    if(!msg.guild.emojis.find((value) => value.name.toLowerCase() === "nofun")){
-        await msg.guild.createEmoji(fs.readFileSync("emote.png"), "nofun") ;
-    }
-
-    await msg.react(msg.guild.emojis.find((value) => value.name.toLowerCase() === "nofun"));
-
     if (msg.member.voiceChannel) await pollyTTS(msg);
     else await msg.reply(totalQuotes[Math.floor(Math.random()*totalQuotes.length)]);
+
+    try{
+        if(!msg.guild.emojis.find((value) => value.name.toLowerCase() === "nofun")){
+            await msg.guild.createEmoji(fs.readFileSync("emote.png"), "nofun") ;
+        }
+
+        await msg.react(msg.guild.emojis.find((value) => value.name.toLowerCase() === "nofun"));
+    }catch (e) {
+        console.error("Something went wring while reacting with :nofun: \n" + e)
+    }
 }
 
 const voiceMap : { [guild : string]: VoiceConnection} = {};
