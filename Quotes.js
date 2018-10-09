@@ -24,7 +24,9 @@ exports.imageQuotes = [
     "https://i.gyazo.com/401a7d36e25d6ddca275cb3f04c2d617.png",
     "https://imgur.com/PlTrXdf",
     "https://gyazo.com/ccbbb11456d1b3dcd64c2d7404c5529c",
-    "https://i.imgur.com/oOf8L8O.png"
+    "https://i.imgur.com/oOf8L8O.png",
+    "https://i.imgur.com/vVawOBO.png",
+    "https://i.imgur.com/PiQeGBj.png"
 ];
 
 exports.textQuotes = [
