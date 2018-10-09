@@ -109,7 +109,7 @@ async function commands(msg) {
         await playYoutube(msg, "https://youtu.be/_AFbtgHJriw", 1.5);
     }
     else if (args[1].toLowerCase() === "gayfrog") {
-        await playYoutube(msg, "https://youtu.be/XYkMga6kP5c", 1);
+        await playYoutube(msg, "https://youtu.be/9JRLCBb7qK8", 1);
     }
     else if (args[1].toLowerCase() === "rapbattle") {
         await playYoutube(msg, "https://youtu.be/XYkMga6kP5c", 1);
