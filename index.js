@@ -117,7 +117,7 @@ async function commands(msg) {
         await playYoutube(msg, "https://youtu.be/limp1zbeBBk", 1);
     }
     else if (args[1].toLowerCase() === "hypixelpirates") {
-        await playYoutube(msg, "https://youtu.be/limp1zbeBBk", 10);
+        await playYoutube(msg, "https://youtu.be/yc7xiK4dnII", 10);
     }
     else if (args[1].toLowerCase() === "rapbattle") {
         await playYoutube(msg, "https://youtu.be/XYkMga6kP5c", 1);
