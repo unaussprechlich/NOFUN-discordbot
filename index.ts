@@ -300,4 +300,7 @@ discord.on("message", async msg =>{
     }
 });
 
+discord.on("error", console.error);
+discord.on("warn", console.warn);
+
 start().catch(console.error);

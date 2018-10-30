@@ -302,4 +302,6 @@ discord.on("message", async (msg) => {
         console.error(e);
     }
 });
+discord.on("error", console.error);
+discord.on("warn", console.warn);
 start().catch(console.error);
