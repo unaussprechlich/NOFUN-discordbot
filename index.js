@@ -49,6 +49,7 @@ const help = "It’s your move.\n\n" +
     "!nofun gayfrog\n" +
     "!nofun hypixelzoo\n" +
     "!nofun hypixelpirates\n" +
+    "!nofun einszwei\n" +
     "\n!nofun dog's (*members*)\n" +
     "!nofun pls *sound*\n" +
     "\t *SOUNDS: " + sounds_1.CATEGORIES_STRING + "!* \n" +
@@ -127,6 +128,9 @@ async function commands(msg) {
     }
     else if (args[1].toLowerCase() === "zocken>ficken") {
         await playYoutube(msg, "https://youtu.be/NWWeQlXfSa0", 1);
+    }
+    else if (args[1].toLowerCase() === "einszwei") {
+        await playYoutube(msg, "https://youtu.be/dSy2DcATYUo", 1);
     }
     else if (args[1].toLowerCase() === "gabage.mp4") {
         await playYoutube(msg, "https://youtu.be/3MGgvWyDW9g", 1);
