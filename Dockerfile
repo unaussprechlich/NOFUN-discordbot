@@ -2,7 +2,6 @@ FROM node:latest
 
 COPY . .
 
-RUN ls
-RUN npm install --production
+RUN npm install
 
 CMD [ "node", "index.js" ]

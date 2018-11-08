@@ -1,12 +1,17 @@
 {
   "name": "NO_FUN_DISCORD_BOT",
   "version": "1.0.0",
+  "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/unaussprechlich/NOFUN-discordbot.git"
+  },
   "dependencies": {
-    "discord.js": "^11.4.2",
     "ffmpeg-binaries": "^4.0.0",
     "node-opus": "^0.3.1",
     "aws-sdk": "^2.351.0",
-    "ytdl-core": "^0.28.0"
+    "ytdl-core": "^0.28.0",
+    "discord.js": "^11.4.2"
   },
   "devDependencies": {
     "@types/node": "^10.12.3"
