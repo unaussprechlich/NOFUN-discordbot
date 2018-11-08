@@ -40,6 +40,7 @@ async function start() {
 const help = "It’s your move.\n\n" +
     "**Commands**\n" +
     "!nofun RealDeal.mp4\n" +
+    "!nofun RealBASS.mp4\n" +
     "!nofun exposed\n" +
     "!nofun DTRASh\n" +
     "!nofun earrape\n" +
@@ -90,8 +91,11 @@ async function commands(msg : Message){
             if(msg.member.voiceChannel) await pollyTTS(msg, "Joey", "NOFUN! Pathetic cunt!", 100);
             else await msg.reply("Okay, okay  - Worthless piece of shit, I stop NOFUN! Pathetic cunt!");
         }
-    } else if (args[1].toLowerCase() === "_realdeal_.mp4" || args[1].toLowerCase() === "realdeal.mp4" ){
+    } else if (args[1].toLowerCase() === "_realdeal_.mp4" || args[1].toLowerCase() === "realdeal.mp4" ) {
         await playYoutube(msg, "https://youtu.be/MH_t2NIklMg", 0.6)
+
+    } else if (args[1].toLowerCase() === "_realbass_.mp4" || args[1].toLowerCase() === "realbass.mp4" ){
+            await playYoutube(msg, "https://youtu.be/5WEKXg214TM", 1)
 
     } else if (args[1].toLowerCase() === "earrape"){
         await playYoutube(msg, "https://youtu.be/UkCih5DLKfI", 10)
