@@ -4,11 +4,11 @@
   "dependencies": {
     "discord.js": "^11.4.2",
     "ffmpeg-binaries": "^4.0.0",
-    "node-opus": "^0.3.0",
-    "aws-sdk": "^2.344.0",
-    "ytdl-core": "^0.27.1"
+    "node-opus": "^0.3.1",
+    "aws-sdk": "^2.351.0",
+    "ytdl-core": "^0.28.0"
   },
   "devDependencies": {
-    "@types/node": "^10.7.1"
+    "@types/node": "^10.12.3"
   }
 }
