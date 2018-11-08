@@ -26,7 +26,19 @@ exports.imageQuotes = [
     "https://gyazo.com/ccbbb11456d1b3dcd64c2d7404c5529c",
     "https://i.imgur.com/oOf8L8O.png",
     "https://i.imgur.com/vVawOBO.png",
-    "https://i.imgur.com/PiQeGBj.png"
+    "https://i.imgur.com/PiQeGBj.png",
+    "https://i.imgur.com/RGllTDf.png",
+    "https://i.imgur.com/zGaF8RT.png",
+    "https://i.imgur.com/LCsTCDr.png",
+    "https://i.imgur.com/wd2D06a.png",
+    "https://i.imgur.com/qJRSR2H.png",
+    "https://i.imgur.com/ECHIVFQ.png",
+    "https://i.imgur.com/crVqKYz.png",
+    "https://i.imgur.com/rpbljdw.png",
+    "https://i.imgur.com/P4hLFCJ.png",
+    "https://i.imgur.com/TCxUUG2.png",
+    "https://i.imgur.com/EWG8MLN.png",
+    "https://i.imgur.com/xcawtmb.png"
 ];
 
 exports.textQuotes = [
