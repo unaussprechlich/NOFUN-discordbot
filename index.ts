@@ -5,7 +5,7 @@ import * as ytdl from "ytdl-core"
 import * as fs from "fs";
 import {VoiceId} from "aws-sdk/clients/polly";
 import {Readable} from "stream";
-import {textQuotes, totalQuotes} from "./Quotes";
+import {textQuotes, totalQuotes, rainbowdisagree2Quotes} from "./Quotes";
 import {links} from "./Links";
 import {SOUNDS, CATEGORIES, CATEGORIES_STRING} from "./sounds/sounds"
 
@@ -14,6 +14,7 @@ const status : PresenceData[] = [
     {game : {name : "!nofun help", type :  "PLAYING" , url : "https://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8"}},
     {game : {name : "\_RealDeal_.mp4", type :  "WATCHING" , url : "https://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8"}}
 ];
+
 
 if(!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY)
     throw "Provide AWS credentials!";
@@ -148,6 +149,24 @@ async function commands(msg : Message){
     } else if (args[1].toLowerCase() === "windowsxp") {
         await playYoutube(msg, "https://youtu.be/6Joyj0dmkug", 10)
 
+    } else if (args[1].toLowerCase() === "rainbowdisagree2"){
+        if(msg.mentions.members && msg.mentions.members.size !== 0) {
+            if(msg.member.hasPermission("ADMINISTRATOR") || msg.member.id === "241301843819495425"){
+                for(const member of msg.mentions.members.array()){
+                    if(getSettingsMap(msg.guild.id).rainbowdisagree2.indexOf(member.id) !== -1){
+                        getSettingsMap(msg.guild.id).rainbowdisagree2.splice(getSettingsMap(msg.guild.id).rainbowdisagree2.indexOf(member.id));
+                        await msg.channel.send("play the game <@" + member.id +">")
+                    } else {
+                        getSettingsMap(msg.guild.id).rainbowdisagree2.push(member.id);
+                        await msg.channel.send("You cannot disagree with fact. <@" + member.id + ">, you silly.\n" +
+                            "\\*Edit\\* Confirmed, <@" + member.id + "> thinks facts change with skill.")
+                    }
+                }
+            }
+        } else {
+            await msg.reply(rainbowdisagree2Quotes[Math.floor(Math.random()*rainbowdisagree2Quotes.length)]);
+        }
+
     } else if (args[1].toLowerCase() === "dogs" || args[1].toLowerCase() === "dog's"){
         await msg.delete().catch();
         if(msg.mentions.members && msg.mentions.members.size !== 0) {
@@ -185,13 +204,32 @@ async function commands(msg : Message){
         await msg.reply("Add me PLZZZZZZ \nhttps://discordapp.com/oauth2/authorize?client_id=481915476256096267&scope=bot&permissions=8" )
 
     } else if(args[1].toLowerCase() === "toggle"){
-        if(!msg.member.hasPermission("ADMINISTRATOR"))
-            await msg.reply("I just find it pathetic with the way you act. Stop acting like a 7 year old. Show a little bot of respect for yourself. Scum");
-        else
+        if(msg.member.hasPermission("ADMINISTRATOR") || msg.member.id === "241301843819495425")
             getSettingsMap(msg.guild.id).nofunEnabled = !getSettingsMap(msg.guild.id).nofunEnabled;
+        else
+            await msg.reply("I just find it pathetic with the way you act. Stop acting like a 7 year old. Show a little bot of respect for yourself. Scum");
     } else {
         await msg.reply(help)
     }
+}
+
+async function rainbowdisagree2(msg : Message){
+    if(msg.author.id === discord.user.id) return;
+
+    if(getSettingsMap(msg.guild.id).rainbowdisagree2.indexOf(msg.author.id) === -1) return;
+
+    await msg.reply(rainbowdisagree2Quotes[Math.floor(Math.random()*rainbowdisagree2Quotes.length)]);
+
+    try{
+        if(!msg.guild.emojis.find((value) => value.name.toLowerCase() === "rainbowdisagree2")){
+            await msg.guild.createEmoji(fs.readFileSync("rainbowdisagree2.png"), "rainbowdisagree2") ;
+        }
+
+        await msg.react(msg.guild.emojis.find((value) => value.name.toLowerCase() === "rainbowdisagree2"));
+    }catch (e) {
+        console.error("Something went wring while reacting with :rainbowdisagree2:")
+    }
+
 }
 
 async function noFun(msg : Message){
@@ -209,7 +247,7 @@ async function noFun(msg : Message){
 
         await msg.react(msg.guild.emojis.find((value) => value.name.toLowerCase() === "nofun"));
     }catch (e) {
-        console.error("Something went wring while reacting with :nofun: \n" + e)
+        console.error("Something went wring while reacting with :nofun:")
     }
 }
 
@@ -217,12 +255,14 @@ const voiceMap : { [guild : string]: VoiceConnection} = {};
 
 interface Settings {
     nofunEnabled : boolean
+    rainbowdisagree2 : string[]
 }
 const settingsMap : { [guild : string]: Settings} = {};
 function getSettingsMap(guildID : Snowflake){
     if(settingsMap[guildID]) return settingsMap[guildID];
     settingsMap[guildID] = {
-        nofunEnabled : true
+        nofunEnabled : true,
+        rainbowdisagree2 : []
     };
     return settingsMap[guildID];
 }
@@ -297,8 +337,10 @@ discord.on("message", async msg =>{
         if(msg.author.bot) return;
         if(msg.content.toUpperCase().match(/^!NOFUN/))
             await commands(msg);
-         else if (msg.content.toUpperCase().match(/NO *FUN/))
+        else if (msg.content.toUpperCase().match(/NO *FUN/))
             await noFun(msg);
+
+        await rainbowdisagree2(msg);
     } catch (e){
         console.error(e)
     }

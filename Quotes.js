@@ -1,6 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 
+exports.rainbowdisagree2Quotes = [
+    "if it had been literally anyone else I wouldn't have \"bashed\" them.\n The issue is I know who these guys are and I can tell you for fact that they are disagreeing with the posts just because it's me. So far they also disagreed with my last 2 comments probably without reading them. I responded to the first 2 disagrees and dug myself a hole but really, I'm not bashing them; I was trying to fight back.\n However, it's fine; I really don't care about ratings (just the attitude behind them) and all I can say for unauss is this:\n You should start using this instead.\n RNBW_Cross.png",
+    "Solo totem is a waste and the only time you should ever do it EVER is if you have the flag alone and need to survive or lose the game."
+];
+
 exports.imageQuotes = [
     "https://i.imgur.com/iyvLL6o.png",
     "https://imgur.com/Ht07jm0",
