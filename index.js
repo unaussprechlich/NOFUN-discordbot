@@ -79,6 +79,7 @@ async function commands(msg) {
     }
     else if (args[1] === "stop") {
         if (voiceMap[msg.guild.id]) {
+            getSettingsMap(msg.guild.id).continuesPlay = false;
             if (msg.member.voiceChannel)
                 await pollyTTS(msg, "Joey", "NOFUN! Pathetic cunt!", 100);
             else
@@ -181,6 +182,7 @@ async function commands(msg) {
             await msg.reply("Fuck off! There us no sound, try **[" + sounds_1.CATEGORIES_STRING + "]** instead, pathetic cunt!");
     }
     else if (args[1].toLowerCase() === "ytmeme") {
+        getSettingsMap(msg.guild.id).continuesPlay = true;
         await playYoutube(msg, Links_1.links[Math.floor(Math.random() * Links_1.links.length)].toString(), 0.6);
     }
     else if (args[1].toLowerCase() === "play") {
@@ -261,6 +263,7 @@ function getSettingsMap(guildID) {
     if (settingsMap[guildID])
         return settingsMap[guildID];
     settingsMap[guildID] = {
+        continuesPlay: false,
         nofunEnabled: true,
         rainbowdisagree2: []
     };
@@ -326,8 +329,13 @@ async function playStream(msg, stream, volume) {
     dispatcher.once("end", reason => {
         if (reason === undefined)
             return;
-        voiceMap[msg.guild.id].disconnect();
-        delete voiceMap[msg.guild.id];
+        if (getSettingsMap(msg.guild.id).continuesPlay) {
+            playYoutube(msg, Links_1.links[Math.floor(Math.random() * Links_1.links.length)].toString(), 0.6).catch(console.error);
+        }
+        else {
+            voiceMap[msg.guild.id].disconnect();
+            delete voiceMap[msg.guild.id];
+        }
     });
 }
 discord.on("message", async (msg) => {

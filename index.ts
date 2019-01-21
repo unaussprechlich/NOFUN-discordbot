@@ -89,6 +89,7 @@ async function commands(msg : Message){
         return;
     } else if (args[1] === "stop"){
         if(voiceMap[msg.guild.id]){
+            getSettingsMap(msg.guild.id).continuesPlay = false;
             if(msg.member.voiceChannel) await pollyTTS(msg, "Joey", "NOFUN! Pathetic cunt!", 100);
             else await msg.reply("Okay, okay  - Worthless piece of shit, I stop NOFUN! Pathetic cunt!");
         }
@@ -182,6 +183,7 @@ async function commands(msg : Message){
         else await msg.reply("Fuck off! There us no sound, try **[" +  CATEGORIES_STRING + "]** instead, pathetic cunt!");
 
     } else if (args[1].toLowerCase() === "ytmeme"){
+        getSettingsMap(msg.guild.id).continuesPlay = true;
         await playYoutube(msg, links[Math.floor(Math.random()*links.length)].toString(), 0.6)
 
     } else if (args[1].toLowerCase() === "play") {
@@ -254,6 +256,7 @@ async function noFun(msg : Message){
 const voiceMap : { [guild : string]: VoiceConnection} = {};
 
 interface Settings {
+    continuesPlay : boolean
     nofunEnabled : boolean
     rainbowdisagree2 : string[]
 }
@@ -261,6 +264,7 @@ const settingsMap : { [guild : string]: Settings} = {};
 function getSettingsMap(guildID : Snowflake){
     if(settingsMap[guildID]) return settingsMap[guildID];
     settingsMap[guildID] = {
+        continuesPlay : false,
         nofunEnabled : true,
         rainbowdisagree2 : []
     };
@@ -327,8 +331,12 @@ async function playStream(msg : Message, stream : Readable, volume? : number | 1
     });
     dispatcher.once("end", reason => {
         if(reason === undefined) return;
-        voiceMap[msg.guild.id].disconnect();
-        delete voiceMap[msg.guild.id];
+        if(getSettingsMap(msg.guild.id).continuesPlay){
+            playYoutube(msg, links[Math.floor(Math.random()*links.length)].toString(), 0.6).catch(console.error)
+        } else {
+            voiceMap[msg.guild.id].disconnect();
+            delete voiceMap[msg.guild.id];
+        }
     });
 }
 
