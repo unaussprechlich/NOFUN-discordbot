@@ -30,28 +30,10 @@ async function start() {
     }, 1000 * 10);
 }
 const help = "It’s your move.\n\n" +
-    "**Commands**\n" +
-    "!nofun RealDeal.mp4\n" +
-    "!nofun RealBASS.mp4\n" +
-    "!nofun exposed\n" +
-    "!nofun DTRASh\n" +
-    "!nofun earrape\n" +
-    "!nofun windowsxp\n" +
-    "!nofun soup\n" +
-    "!nofun personalhealer\n" +
-    "!nofun wii\n" +
-    "!nofun wiisports\n" +
-    "!nofun ytmeme\n" +
-    "!nofun pillowtalking\n" +
-    "!nofun gabage.mp4\n" +
-    "!nofun whyubullyme\n" +
-    "!nofun rapbattle\n" +
-    "!nofun zocken>ficken\n" +
-    "!nofun gayfrog\n" +
-    "!nofun hypixelzoo\n" +
-    "!nofun hypixelpirates\n" +
-    "!nofun einszwei\n" +
+    "**Commands** !nofun\n" +
+    "RealDeal.mp4 | RealBASS.mp4 | exposed | DTRASh | earrape | windowsxp | gayfrok | personalhealer | nofun wii | wiisports | ytmeme | pillowtalking | gabage.mp4 | whyubullyme | rapbattle | zocken>ficken | gayfrog | hypixelzoo | hypixelpirates | einszwei\n" +
     "\n!nofun dog's (*members*)\n" +
+    "\n!nofun rainbowdisagree2 (*members*)\n" +
     "!nofun pls *sound*\n" +
     "\t *SOUNDS: " + sounds_1.CATEGORIES_STRING + "!* \n" +
     "!nofun play *url*\n" +
@@ -107,7 +89,7 @@ async function commands(msg) {
     else if (args[1].toLowerCase() === "wiisports") {
         await playYoutube(msg, "https://youtu.be/8IFzTDLHuCU", 0.5);
     }
-    else if (args[1].toLowerCase() === "soup") {
+    else if (args[1].toLowerCase() === "gayfrok") {
         await playYoutube(msg, "https://youtu.be/Jp3aR5c3k3U", 1);
     }
     else if (args[1].toLowerCase() === "personalhealer") {
@@ -329,7 +311,7 @@ async function playStream(msg, stream, volume) {
     dispatcher.once("end", reason => {
         if (reason === undefined)
             return;
-        if (getSettingsMap(msg.guild.id).continuesPlay) {
+        if (getSettingsMap(msg.guild.id).continuesPlay && msg.member.voiceChannel) {
             playYoutube(msg, Links_1.links[Math.floor(Math.random() * Links_1.links.length)].toString(), 0.6).catch(console.error);
         }
         else {
